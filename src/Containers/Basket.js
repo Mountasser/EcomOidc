@@ -1,4 +1,4 @@
-import React from "react";
+import React , {useState} from "react";
 import {connect} from "react-redux";
 import { getTotalBasketPrice,getBasketItemsWithCount } from "../selectors/Items";
 import R from "ramda";
@@ -9,6 +9,7 @@ import { validate } from "../utils/validator";
 
 import Header from "./Header";
 import EmptyCart from "./EmptyCart";
+import {Qrcode} from './Modal';
 
 const Basket = ({items,totalPrice,
                 removeItemFromBasket,cleanBasket, coupon,
@@ -86,6 +87,8 @@ const Basket = ({items,totalPrice,
         };
 
         const renderSidebar = ()=>{
+            const [smShow, setSmShow] = useState(false);
+
             return(
                 <div>   
                     <Link
@@ -104,6 +107,19 @@ const Basket = ({items,totalPrice,
                                 <span className="glyphicon glyphicon-trash cart-icon"/>
                                 Clean Cart
                                 </button>
+
+                            </div>
+                            <div>
+                                <button className="btn btn-danger"
+                                        onClick={() => {
+                                            console.log("+++++")
+                                            return setSmShow(true)}}        
+                                >
+                                <span className="glyphicon glyphicon-trash cart-icon"/>
+                                Proceed To Payment
+                                </button>
+                                {smShow &&   <Qrcode closeModal={(() => setSmShow(false)).bind(this)}/>
+      }
                             </div>
                             <div>Apply Coupon</div>
                             <div className="coupon-container">
